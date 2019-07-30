@@ -1,0 +1,64 @@
+{
+  "name": "knack-osdi-proxy",
+  "version": "0.0.1",
+  "description": "Provides UV Knack resources via the OSDI API specification.",
+  "main": "app.js",
+  "private": true,
+  "engines": {
+    "node": "10.x.x"
+  },
+  "scripts": {
+    "start": "node app",
+    "watch": "supervisor -w app.js,middleware/,lib/,routes/,config.js -- app.js",
+    "debug": "supervisor --inspect -w app.js,middleware/,lib/,routes/,config.js -- app.js",
+    "test": "mocha test",
+    "watch-test": "supervisor -n exit -x npm -w app.js,middleware/,lib/,routes/,config.js,test/ -- test",
+    "coverage": "nyc cover _mocha test --recursive -- -u exports -R spec && open coverage/lcov-report/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coagmano/knack-osdi-proxy.git"
+  },
+  "author": "Frederick Stark <fred@starkenterprises.com.au>",
+  "homepage": "https://github.com/coagmano/knack-osdi-proxy",
+  "readme": "README.md",
+  "devDependencies": {
+    "babel-eslint": "^10.0.2",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-config-problems": "^3.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-unicorn": "^10.0.0",
+    "jshint": "~2.10.2",
+    "mocha": "^6.2.0",
+    "nyc": "^14.1.1",
+    "prettier": "^1.18.2",
+    "proxyquire": "^2.1.1",
+    "should": "^13.2.3",
+    "sinon": "^7.3.2",
+    "supertest": "^4.0.2",
+    "supervisor": "^0.12.0"
+  },
+  "dependencies": {
+    "basic-auth": "^2.0.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "createerror": "1.3.0",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "follow-redirects": "^1.7.0",
+    "http-as-promised": "^2.0.1",
+    "limiter": "^1.1.4",
+    "lodash": "^4.17.15",
+    "odata-parser": "^1.4.1",
+    "request": "^2.88.0",
+    "require-directory": "^2.1.1",
+    "selectn": "^1.1.2",
+    "soap": "0.28.0",
+    "xml2js": "^0.4.19"
+  }
+}

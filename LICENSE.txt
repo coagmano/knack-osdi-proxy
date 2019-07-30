@@ -1,0 +1,7 @@
+Copyright (c) Frederick Stark 2019
+
+This distribution is a modified form of code originally produced by NGP VAN 
+under the Apache 2 licence.
+Original source here: https://github.com/NGPVAN/osdi-service/
+
+All modifications are Copyright of Frederick Stark
