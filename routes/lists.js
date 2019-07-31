@@ -1,22 +1,21 @@
-const { translateToOSDIPerson } = require("./people");
+const { format } = require("date-fns");
+
 const bridge = require("../lib/bridge");
 const config = require("../config");
-const fields = require("../lib/knack-api-client/fields");
 const lists = require("../lib/knack-api-client/lists");
-const objects = require("../lib/knack-api-client/objects");
 const osdi = require("../lib/osdi");
 
-// const listUrlParser = /scene_(?<scene>\d+)\/\w+\/view_(?<view>\d+)/i;
 function translateToOSDIList(knackList) {
-  const { id, name, administrative_url } = knackList;
-  // osdi.response.addCurie(answer, config.get("curieTemplate"));
+  const { id, name } = knackList;
+  const [scene, view] = id.split("-");
+  const todaysName = `${name} ${format(new Date(), "DDMMYYYY")}`;
   const answer = {
     ...osdi.response.createCommonItem(),
     identifiers: [`Knack:${id}`],
-    name,
-    title: name,
-    administrative_url,
-    // total_items,
+    name: todaysName,
+    title: todaysName,
+    administrative_url: `https://builder.knack.com/unitedvoice/second#pages/scene_${scene}/views/view_${view}`,
+    // total_items, // TODO: Compute this property?
   };
   osdi.response.addSelfLink(answer, `lists/${id}`);
   osdi.response.addLink(answer, "osdi:items", `lists/${id}/items`);
