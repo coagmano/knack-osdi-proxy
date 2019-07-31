@@ -4,7 +4,7 @@ const config = require("../config");
 const fields = require("../lib/knack-api-client/fields");
 const objectMap = require("../lib/knack-api-client/objects");
 const osdi = require("../lib/osdi");
-const taglist = require('../lib/knack-api-client/tags');
+const taglist = require("../lib/knack-api-client/tags");
 
 const valueOrBlank = value => value || "";
 const phoneRawOrBlank = phone => (phone && phone.number) || "";
@@ -27,6 +27,7 @@ function translateToOSDIPerson(person) {
     additional_name: valueOrBlank(additional),
   };
   osdi.response.addIdentifier(answer, `Knack:${person.id}`);
+  osdi.response.addIdentifier(answer, `UnitedVoice:${person[fields.memberId]}`);
   // "osdi:record_canvass_helper": {
   //   href:
   //     config.get("apiEndpoint") +
@@ -43,7 +44,7 @@ function translateToOSDIPerson(person) {
       locality: valueOrBlank(address.city),
       region: valueOrBlank(address.state),
       postal_code: valueOrBlank(address.zip),
-      country: "Australia",
+      country: "AU",
       address_type: "Mailing",
     },
   ];
@@ -131,13 +132,15 @@ function getTaggings(request, response) {
   const personId = request.params.id;
   const client = bridge.createClient(request);
   const paginationParams = bridge.getKnackPaginationParams(request);
-  const resource = client.getRecord(objectMap.members, personId).then(result => {
-    const person = result;
-    const tags = taglist.filter(tag => {
-      return person[tag.field] === tag.value;
+  const resource = client
+    .getRecord(objectMap.members, personId)
+    .then(result => {
+      const person = result;
+      const tags = taglist.filter(tag => {
+        return person[tag.field] === tag.value;
+      });
+      return { records: tags.map(tag => ({ tag, person })) };
     });
-    return { records: tags.map(tag => ({ tag, person })) };
-  });
   bridge.sendMultiResourceResponse(
     resource,
     paginationParams,
