@@ -37,8 +37,9 @@ function translateToOSDIPerson(person) {
   // },
 
   const address = person[fields.Address_raw];
-  answer.postal_addresses = [
-    {
+  answer.postal_addresses = [];
+  if (address) {
+    answer.postal_addresses.push({
       primary: true,
       address_lines: [address.street, address.street2],
       locality: valueOrBlank(address.city),
@@ -46,24 +47,25 @@ function translateToOSDIPerson(person) {
       postal_code: valueOrBlank(address.zip),
       country: "AU",
       address_type: "Mailing",
-    },
-  ];
+    });
+  }
 
-  answer.email_addresses = [
-    {
+  answer.email_addresses = [];
+  if (person[fields["Home Email_raw"]]) {
+    answer.email_addresses.push({
       address_type: "personal",
       address: emailRawOrBlank(person[fields["Home Email_raw"]]),
-    },
-    {
+    });
+  }
+  if (person[fields["Work Email_raw"]]) {
+    answer.email_addresses.push({
       address_type: "work",
       address: emailRawOrBlank(person[fields["Work Email_raw"]]),
-    },
-  ];
+    });
+  }
   // Set primary email to home if exists, else work
-  if (answer.email_addresses[0].address.length > 0) {
+  if (answer.email_addresses[0] && answer.email_addresses[0].address.length > 0) {
     answer.email_addresses[0].primary = true;
-  } else if (answer.email_addresses[1].address.length > 0) {
-    answer.email_addresses[1].primary = true;
   }
 
   const mobile = phoneRawOrBlank(person[fields.Mobile_raw]);
