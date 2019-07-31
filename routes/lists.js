@@ -1,5 +1,6 @@
 const { format } = require("date-fns");
 
+const { translateToOSDIPerson } = require('./people');
 const bridge = require("../lib/bridge");
 const config = require("../config");
 const lists = require("../lib/knack-api-client/lists");
@@ -54,7 +55,7 @@ function getMany(request, response) {
 }
 
 function translateToOSDIItem(item) {
-  const { personId, listId } = item;
+  const { personId, listId, embed } = item;
   const answer = {
     origin_system: "Knack",
     item_type: "osdi:person",
@@ -64,7 +65,14 @@ function translateToOSDIItem(item) {
   osdi.response.addLink(answer, "osdi:list", `lists/${listId}`);
   osdi.response.addLink(answer, "osdi:person", `people/${personId}`);
   osdi.response.addCurie(answer, config.get("curieTemplate"));
-
+  if (embed) {
+    osdi.response.addEmbeddedItem(
+      answer,
+      embed,
+      translateToOSDIPerson,
+      "person"
+    );
+  }
   return answer;
 }
 function getItem(request, response) {
@@ -97,6 +105,7 @@ function getItems(request, response) {
         records: result.records.map(person => ({
           listId,
           personId: person.id,
+          embed: person,
         })),
       };
     });
