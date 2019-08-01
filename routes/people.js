@@ -9,7 +9,7 @@ const taglist = require("../lib/knack-api-client/tags");
 const valueOrBlank = value => value || "";
 const phoneRawOrBlank = phone => (phone && phone.number) || "";
 const emailRawOrBlank = raw => (raw && raw.email) || "";
-const identifierRawOrBlank = raw => (raw && raw.identifier) || "";
+const identifierRawOrBlank = raw => (raw && raw[0] && raw[0].identifier) || "";
 
 function splitMemberName(name) {
   const [first, ...rest] = name.split(" ");
