@@ -9,6 +9,7 @@ const taglist = require("../lib/knack-api-client/tags");
 const valueOrBlank = value => value || "";
 const phoneRawOrBlank = phone => (phone && phone.number) || "";
 const emailRawOrBlank = raw => (raw && raw.email) || "";
+const identifierRawOrBlank = raw => (raw && raw.identifier) || "";
 
 function splitMemberName(name) {
   const [first, ...rest] = name.split(" ");
@@ -92,7 +93,7 @@ function translateToOSDIPerson(person) {
   }
 
   answer.custom_fields = {
-    Branch: person[fields.Branch],
+    Branch: identifierRawOrBlank(person[fields.Branch_raw]),
     workplace: person[fields["Worksite Name"]],
     employer: person[fields.Employer],
     memberId: person[fields.memberId],
