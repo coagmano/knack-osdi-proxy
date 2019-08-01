@@ -64,7 +64,10 @@ function translateToOSDIPerson(person) {
     });
   }
   // Set primary email to home if exists, else work
-  if (answer.email_addresses[0] && answer.email_addresses[0].address.length > 0) {
+  if (
+    answer.email_addresses[0] &&
+    answer.email_addresses[0].address.length > 0
+  ) {
     answer.email_addresses[0].primary = true;
   }
 
@@ -87,6 +90,15 @@ function translateToOSDIPerson(person) {
       do_not_call: person[fields["Do not contact"]],
     });
   }
+
+  answer.custom_fields = {
+    Branch: person[fields.Branch],
+    workplace: person[fields["Worksite Name"]],
+    employer: person[fields.Employer],
+    memberId: person[fields.memberId],
+    section: person[fields.Section],
+    Language: person[fields.Language],
+  };
   osdi.response.addSelfLink(answer, "people/" + person.id);
   osdi.response.addLink(
     answer,
