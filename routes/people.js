@@ -93,12 +93,12 @@ function translateToOSDIPerson(person) {
   }
 
   answer.custom_fields = {
-    "3343": identifierRawOrBlank(person[fields.Branch_raw]),
-    "3311": person[fields["Worksite Name"]],
-    "3310": person[fields.Employer],
-    "3309": person[fields.memberId],
-    "3262": person[fields.Section],
-    "3342": person[fields.Language],
+    Branch: identifierRawOrBlank(person[fields.Branch_raw]),
+    workplace: person[fields["Worksite Name"]],
+    employer: person[fields.Employer],
+    memberId: person[fields.memberId],
+    section: person[fields.Section],
+    Language: person[fields.Language],
   };
   osdi.response.addSelfLink(answer, "people/" + person.id);
   osdi.response.addLink(
