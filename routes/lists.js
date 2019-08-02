@@ -1,6 +1,6 @@
 const { format } = require("date-fns");
 
-const { translateToOSDIPerson } = require('./people');
+const { translateToOSDIPerson } = require("./people");
 const bridge = require("../lib/bridge");
 const config = require("../config");
 const lists = require("../lib/knack-api-client/lists");
@@ -102,7 +102,7 @@ function getItems(request, response) {
         total_records: result.total_records,
         per_page: paginationParams.rows_per_page,
 
-        records: result.records.map(person => ({
+        records: (result.records || []).map(person => ({
           listId,
           personId: person.id,
           embed: person,

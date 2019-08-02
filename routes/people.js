@@ -12,9 +12,13 @@ const emailRawOrBlank = raw => (raw && raw.email) || "";
 const identifierRawOrBlank = raw => (raw && raw[0] && raw[0].identifier) || "";
 
 function splitMemberName(name) {
-  const [first, ...rest] = name.split(" ");
+  const [first, ...rest] = name ? name.split(" ") : [];
   const last = rest.pop();
-  return { first, additional: rest.join(" "), last };
+  return {
+    first: valueOrBlank(first),
+    additional: rest.join(" "),
+    last: valueOrBlank(last),
+  };
 }
 
 function translateToOSDIPerson(person) {
