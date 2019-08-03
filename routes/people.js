@@ -118,8 +118,17 @@ function translateToOSDIPerson(person) {
 function getOne(request, response) {
   const personId = request.params.id;
   const client = bridge.createClient(request);
+  let resource;
+  if (bridge.personCache.has(personId)) {
+    resource = bridge.personCache.get(personId);
+  } else {
+    resource = client.getRecord(objectMap.members, personId).then(person => {
+      bridge.personCache.set(person.id, person);
+      return person;
+    });
+  }
   bridge.sendSingleResourceResponse(
-    client.getRecord(objectMap.members, personId),
+    resource,
     translateToOSDIPerson,
     "person",
     response
@@ -133,7 +142,14 @@ function getMany(request, response) {
   const paginationParams = bridge.getKnackPaginationParams(request);
   const { page, rows_per_page } = paginationParams;
   bridge.sendMultiResourceResponse(
-    client.findRecord(objectMap.members, filter, page, rows_per_page),
+    client
+      .findRecord(objectMap.members, filter, page, rows_per_page)
+      .then(result => {
+        (result.records || []).forEach(person => {
+          bridge.personCache.set(person.id, person);
+        });
+        return result;
+      }),
     paginationParams,
     translateToOSDIPerson,
     "people",

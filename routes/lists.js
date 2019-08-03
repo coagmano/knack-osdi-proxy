@@ -96,6 +96,9 @@ function getItems(request, response) {
     .createUserClient(request)
     .then(client => client.getView(scene, view, page, rows_per_page))
     .then(result => {
+      (result.records || []).forEach(person => {
+        bridge.personCache.set(person.id, person);
+      });
       return {
         total_pages: result.total_pages,
         current_page: result.current_page,
