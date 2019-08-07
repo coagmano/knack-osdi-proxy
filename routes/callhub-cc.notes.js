@@ -6,7 +6,6 @@ const questions = require("../lib/knack-api-client/questions");
 const API_KEY = config.get("knackAPIKey");
 
 async function notesEdited(request) {
-
   const { memberId, surveys, identifiers } = request.body.data;
   const client = APIClient(API_KEY);
   let knackId = identifiers.find(id => id.includes("Knack"));
@@ -24,10 +23,12 @@ async function notesEdited(request) {
   }
   const modifier = (surveys || []).reduce((acc, survey) => {
     const testString = survey.question.toLowerCase();
-    const { field } = questions.find(({ questionPartial }) => {
+    const found = questions.find(({ questionPartial }) => {
       return testString.includes(questionPartial);
     });
-    acc[field] = survey.answer;
+    if (found) {
+      acc[found.field] = survey.answer;
+    }
     return acc;
   }, {});
 
@@ -42,6 +43,7 @@ const handleErrors = func => (request, response) => {
       response.end(JSON.stringify(result));
     })
     .catch(error => {
+      console.error(error);
       response.statusCode = 500;
       response.end(JSON.stringify(error));
     });
