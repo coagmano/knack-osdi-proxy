@@ -8,7 +8,7 @@ const API_KEY = config.get("knackAPIKey");
 async function notesEdited(request) {
   const { memberId, surveys, identifiers } = request.body.data;
   const client = APIClient(API_KEY);
-  let knackId = identifiers.find(id => id.includes("Knack"));
+  let knackId = identifiers && identifiers.find(id => id.includes("Knack"));
   knackId = knackId && knackId.split(":")[1];
   // let person;
   if (!knackId) {
