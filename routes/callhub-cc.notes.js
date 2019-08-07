@@ -12,13 +12,16 @@ async function notesEdited(request) {
   knackId = knackId && knackId.split(":")[1];
   // let person;
   if (!knackId) {
-    const result = client.findRecord(objectMap.members, {
+    const result = await client.findRecord(objectMap.members, {
       field: fieldMap.memberId,
       operator: "is",
       value: memberId,
     });
     if (result && result.records && result.records.length > 0) {
       knackId = result.records[0].id;
+    } else {
+      console.error(result)
+      throw new Error('Could not find member')
     }
   }
   const modifier = (surveys || []).reduce((acc, survey) => {
