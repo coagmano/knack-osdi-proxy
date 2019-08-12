@@ -20,8 +20,8 @@ async function notesEdited(request) {
     if (result && result.records && result.records.length > 0) {
       knackId = result.records[0].id;
     } else {
-      console.error(result)
-      throw new Error('Could not find member')
+      console.error(result);
+      throw new Error("Could not find member");
     }
   }
   const modifier = (surveys || []).reduce((acc, survey) => {
@@ -34,7 +34,7 @@ async function notesEdited(request) {
     }
     return acc;
   }, {});
-
+  modifier[fieldMap["Last Conversation Date"]] = new Date();
   return client.updateRecord(objectMap.members, knackId, modifier);
 }
 
