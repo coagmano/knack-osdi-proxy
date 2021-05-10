@@ -54,7 +54,7 @@
     "follow-redirects": "^1.7.0",
     "http-as-promised": "^2.0.1",
     "limiter": "^1.1.4",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "odata-parser": "^1.4.1",
     "request": "^2.88.0",
     "require-directory": "^2.1.1",
