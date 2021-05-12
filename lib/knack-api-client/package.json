@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "follow-redirects": "0.0.3",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "request": "^2.69.0"
   },
   "repository": {
