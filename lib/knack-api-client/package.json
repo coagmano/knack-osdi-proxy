@@ -9,7 +9,7 @@
   "author": "Cameron Henlin <cam.henlin@gmail.com> (https://github.com/CamHenlin/)",
   "license": "ISC",
   "dependencies": {
-    "follow-redirects": "1.14.7",
+    "follow-redirects": "1.14.8",
     "lodash": "^4.17.21",
     "request": "^2.69.0"
   },
